@@ -24,6 +24,8 @@ Ideally:
 
 ## TODO
 
+* FIND A CODER!!
+
 * Actual spider code(WAT?) with incremental updating check(only fetch latest issue that not recorded locally)
 
 * Non-blocking mechanism
