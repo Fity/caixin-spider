@@ -110,8 +110,9 @@ class Article(DeclarativeBase):
     id = Column(Integer, primary_key=True)
     url = Column(String)
 
-    content = Column(String)
+    abstract = Column(String, nullable=True)
     author = Column(String, nullable=True)
+    content = Column(String)
 
     # TODO: convenient 1-to-many query for both
     # articles under same issue and publish date
