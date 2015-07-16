@@ -11,11 +11,20 @@ Database usage:
 
 """
 
-from sqlalchemy import create_engine, Column, String, \
-    Integer, Boolean, DateTime, ForeignKey
+from sqlalchemy import (
+    create_engine,
+    Column,
+    String,
+    Integer,
+    DateTime,
+    ForeignKey,
+)
 from sqlalchemy.engine.url import URL
 from sqlalchemy.exc import OperationalError
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import (
+    sessionmaker,
+    relationship,
+)
 import settings
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -39,6 +48,9 @@ def db_connect():
         raise ValueError("Check database settings!")
 
     return engine
+engine = db_connect()
+Session = sessionmaker(bind=db_connect())
+
 
 def create_tables(engine):
     """
@@ -47,6 +59,7 @@ def create_tables(engine):
     only when start crawling.
     """
     DeclarativeBase.metadata.create_all(engine)
+
 
 def insert_item(session, sql_item):
     """
@@ -66,6 +79,7 @@ def insert_item(session, sql_item):
         raise
     finally:
         session.close()
+
 
 class Issue(DeclarativeBase):
 
@@ -88,7 +102,7 @@ class Issue(DeclarativeBase):
     # - article = someArticle()
     # - article.relate_issue.articles.all()
 
-    # ref: http://stackoverflow.com/questions/7420670/how-do-i-access-the-related-foreignkey-object-from-a-object-in-sqlalchemy
+    # ref: http://stackoverflow.com/questions/7420670/how-do-i-access-the-related-foreignkey-object-from-a-object-in-sqlalchemy  # noqa
     # ref: http://docs.sqlalchemy.org/en/rel_1_0/orm/relationships.html
     articles = relationship('Article', backref='issue')
 
@@ -121,10 +135,6 @@ class Article(DeclarativeBase):
 
 def test():
 
-    engine = db_connect()
-    create_tables(engine)
-    from sqlalchemy.orm import sessionmaker
-    Session = sessionmaker(bind=rr)
     session = Session()
     aaa = Issue(id=1, publish_date='20150101',
                 title='java: the best programming language.')
@@ -135,4 +145,3 @@ def test():
     session.add(bbb)
     session.commit()
     session.query(Article)
-

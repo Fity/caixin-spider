@@ -6,7 +6,6 @@ Utils including:
  - database check and create
 
 """
-from models import db_connect
 import os
 import pickle
 import requests
@@ -17,6 +16,7 @@ import settings
 session_name = 'caixin.p'
 abs_path = os.path.realpath(__file__)
 session_path = abs_path.replace(__file__, session_name)
+
 
 def load_session_or_login():
     """
